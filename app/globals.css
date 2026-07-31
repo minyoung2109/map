@@ -28,19 +28,78 @@ button {
   font: inherit;
 }
 
+/* --------------------------------------------------------------------------
+   Layout
+   Phone: a single full-bleed column — the flow is the whole page.
+   Desktop: the flow narrows to a working column on the left and the map
+   becomes a persistent pane on the right, the way a map service behaves when
+   there is room for both.
+   -------------------------------------------------------------------------- */
+
+.app-layout {
+  display: flex;
+  min-height: 100dvh;
+}
+
 .app-shell {
   position: relative;
   display: flex;
   flex-direction: column;
-  max-width: var(--frame-width);
+  flex: 1;
+  min-width: 0;
   min-height: 100dvh;
-  margin-inline: auto;
   background: var(--color-bg-primary);
   overflow: hidden;
 }
 
-@media (min-width: 480px) {
+/* The persistent map pane is desktop-only; on a phone each screen carries its
+   own map inline where it is relevant. */
+.app-side {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .app-layout {
+    height: 100dvh;
+  }
+
   .app-shell {
+    flex: none;
+    width: 420px;
+    height: 100dvh;
+    min-height: 0;
+    border-inline-end: 1px solid var(--color-separator);
+  }
+
+  .app-side {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    background: var(--map-land);
+  }
+
+  .app-side__map {
+    flex: 1;
+    height: auto;
+  }
+
+  .app-side__caption {
+    position: absolute;
+    inset-inline: var(--space-8);
+    bottom: var(--space-8);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-primary);
+    color: var(--color-text-secondary);
+    font: var(--type-body-3);
     box-shadow: var(--elevation-2);
+    text-align: center;
+  }
+
+  /* A screen's own inline map is redundant once the pane is showing. */
+  .app-map--inline {
+    display: none;
   }
 }

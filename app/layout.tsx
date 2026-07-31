@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import SidePanel from "./components/SidePanel";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <div className="app-shell">{children}</div>
+        <div className="app-layout">
+          <div className="app-shell">{children}</div>
+          <SidePanel />
+        </div>
       </body>
     </html>
   );

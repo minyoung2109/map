@@ -706,6 +706,109 @@
 }
 .app-leg__time { font-variant-numeric: tabular-nums; color: var(--color-text-primary); }
 
+/* Place card — a photo-led result row, the shape a Korean place service uses:
+   image first, then name + category, then the numbers people actually scan
+   (rating, review count, typical price). */
+.app-place {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.app-place__figure {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-tertiary);
+}
+.app-place__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Photo position within the set, as a map service labels its gallery. */
+.app-place__count {
+  position: absolute;
+  top: var(--space-4);
+  inset-inline-end: var(--space-4);
+  padding: 1px var(--space-4);
+  border-radius: var(--radius-xs);
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--lds-white);
+  font: var(--type-body-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.app-place__badges {
+  position: absolute;
+  bottom: var(--space-4);
+  inset-inline-start: var(--space-4);
+  display: flex;
+  gap: var(--space-3);
+}
+
+.app-place__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-block: var(--space-5) var(--space-6);
+}
+
+.app-place__name {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.app-place__title {
+  font: var(--type-title-3);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.app-place__kind {
+  font: var(--type-body-4);
+  color: var(--color-text-tertiary);
+  flex: none;
+}
+
+.app-place__desc {
+  display: block;
+  font: var(--type-body-3);
+  color: var(--color-text-secondary);
+}
+
+.app-place__stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--type-body-3);
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+.app-place__score {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-bold);
+}
+.app-place__star { color: var(--lds-orange-500); }
+.app-place__stats b {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-semibold);
+}
+.app-place__sep { color: var(--color-separator-strong); }
+
 /* Course timeline — the schedule built from the selected categories.
    Rows are reorderable; the grip is the affordance. */
 .app-timeline {
@@ -747,22 +850,26 @@
   padding: var(--space-3);
 }
 
-/* Map surface placeholder — replaced by the Kakao Maps SDK canvas.
-   Markers are positioned with inline top/left percentages by the caller, so
-   the surface establishes the containing block. */
+/* Map surface. The <svg> inside is a placeholder for the Kakao Maps SDK
+   canvas; markers are positioned with inline top/left percentages by the
+   caller, so the surface establishes the containing block. */
 .app-map {
   position: relative;
   height: 180px;
   flex: none;
-  background:
-    repeating-linear-gradient(0deg, transparent 0 19px, var(--color-separator) 19px 20px),
-    repeating-linear-gradient(90deg, transparent 0 19px, var(--color-separator) 19px 20px),
-    var(--color-bg-secondary);
+  overflow: hidden;
+  background: var(--map-land);
+}
+.app-map__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-/* The recommended meeting point. */
+/* The recommended meeting point. Sits above every other map overlay. */
 .app-map__pin {
   position: absolute;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -771,21 +878,120 @@
   background: var(--color-brand);
   color: var(--color-text-on-fill);
   font: var(--type-title-5);
+  font-weight: var(--weight-bold);
   box-shadow: var(--elevation-2);
   white-space: nowrap;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -100%);
+}
+.app-map__pin::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--color-brand);
+}
+.app-map__pin-glyph { font-size: 12px; }
+
+/* Floating filter pills, anchored to the top-left of the map. */
+.app-map__filters {
+  position: absolute;
+  z-index: 3;
+  top: var(--space-5);
+  inset-inline: var(--space-5);
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.app-map__filters::-webkit-scrollbar { display: none; }
+
+/* Zoom / locate / scale, mirroring where a map service puts them. */
+.app-map__controls {
+  position: absolute;
+  z-index: 3;
+  inset-inline-end: var(--space-5);
+  top: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--elevation-2);
+}
+.app-map__control {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+}
+.app-map__control + .app-map__control {
+  border-top: 1px solid var(--color-separator);
+}
+.app-map__control:hover { background: var(--color-bg-tertiary); }
+
+.app-map__locate {
+  position: absolute;
+  z-index: 3;
+  inset-inline-end: var(--space-5);
+  bottom: var(--space-8);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--elevation-2);
+}
+
+.app-map__scale {
+  position: absolute;
+  z-index: 3;
+  inset-inline-start: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--map-label);
+  font: var(--type-body-4);
+  font-variant-numeric: tabular-nums;
+}
+.app-map__scale-bar {
+  width: 34px;
+  height: 6px;
+  border: 1px solid var(--map-label);
+  border-top: 0;
 }
 
 /* One participant's origin. Colors are assigned by the caller and match the
    per-person colors used in the fairness meter. */
 .app-map__dot {
   position: absolute;
-  width: 9px;
-  height: 9px;
+  z-index: 1;
+  width: 11px;
+  height: 11px;
   border-radius: var(--radius-full);
   border: 2px solid var(--color-bg-primary);
-  box-shadow: 0 0 0 1px var(--color-separator-strong);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   transform: translate(-50%, -50%);
+}
+
+/* The participant's name, tucked under their origin dot. */
+.app-map__dot-label {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font: var(--type-body-4);
+  white-space: nowrap;
+  box-shadow: var(--elevation-1);
 }
 
 @media (prefers-reduced-motion: reduce) {

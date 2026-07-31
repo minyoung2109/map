@@ -89,6 +89,22 @@
 
   --color-scrim: rgba(0, 0, 0, 0.60);
 
+  /* Map surface. Not part of LDSM — these mirror the palette a Korean map
+     service uses so the placeholder reads as a map rather than a wireframe. */
+  --map-land: #F7F5F0;
+  --map-block: #EDEAE3;
+  --map-block-alt: #E6E2D8;
+  --map-road: #FFFFFF;
+  --map-road-edge: #E1DDD3;
+  --map-highway: #FBDCA6;
+  --map-highway-edge: #EBC17C;
+  --map-park: #D6E8C7;
+  --map-park-edge: #C3DCB0;
+  --map-water: #B2D9ED;
+  --map-label: #4A4E52;
+  --map-label-sub: #8C9095;
+  --map-poi: #F4753E;
+
   /* ---------------------------------------------------------------------
      3. TYPOGRAPHY
      [SPEC] LDSM uses each OS's system font — no webfont is shipped.
@@ -218,6 +234,20 @@
 
     --color-scrim: rgba(0, 0, 0, 0.72);
 
+    --map-land: #1B1E21;
+    --map-block: #25292D;
+    --map-block-alt: #2C3035;
+    --map-road: #3B4147;
+    --map-road-edge: #14171A;
+    --map-highway: #6B5836;
+    --map-highway-edge: #4A3D25;
+    --map-park: #22331F;
+    --map-park-edge: #2C4128;
+    --map-water: #1A2D3E;
+    --map-label: #C3C7CB;
+    --map-label-sub: #82878C;
+    --map-poi: #E8703C;
+
     --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.5);
     --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.6);
     --elevation-3: 0 -2px 12px rgba(0, 0, 0, 0.7);
@@ -245,6 +275,20 @@
 
   --color-scrim: rgba(0, 0, 0, 0.72);
 
+  --map-land: #1B1E21;
+  --map-block: #25292D;
+  --map-block-alt: #2C3035;
+  --map-road: #3B4147;
+  --map-road-edge: #14171A;
+  --map-highway: #6B5836;
+  --map-highway-edge: #4A3D25;
+  --map-park: #22331F;
+  --map-park-edge: #2C4128;
+  --map-water: #1A2D3E;
+  --map-label: #C3C7CB;
+  --map-label-sub: #82878C;
+  --map-poi: #E8703C;
+
   --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.5);
   --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.6);
   --elevation-3: 0 -2px 12px rgba(0, 0, 0, 0.7);
@@ -269,6 +313,20 @@
   --color-info-subtle: rgba(77, 115, 255, 0.10);
 
   --color-scrim: rgba(0, 0, 0, 0.60);
+
+  --map-land: #F7F5F0;
+  --map-block: #EDEAE3;
+  --map-block-alt: #E6E2D8;
+  --map-road: #FFFFFF;
+  --map-road-edge: #E1DDD3;
+  --map-highway: #FBDCA6;
+  --map-highway-edge: #EBC17C;
+  --map-park: #D6E8C7;
+  --map-park-edge: #C3DCB0;
+  --map-water: #B2D9ED;
+  --map-label: #4A4E52;
+  --map-label-sub: #8C9095;
+  --map-poi: #F4753E;
 
   --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.06);
   --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.08);
