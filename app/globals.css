@@ -1,0 +1,46 @@
+@import "../design-system/tokens.css";
+@import "../design-system/components.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  font: var(--type-body-2);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--frame-width);
+  min-height: 100dvh;
+  margin-inline: auto;
+  background: var(--color-bg-primary);
+  overflow: hidden;
+}
+
+@media (min-width: 480px) {
+  .app-shell {
+    box-shadow: var(--elevation-2);
+  }
+}

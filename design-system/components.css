@@ -25,6 +25,16 @@
 /* [SPEC] All screens use a common 16pt left/right margin. */
 .lds-margin { padding-inline: var(--screen-margin); }
 
+/* The single scrolling region between a fixed top navigation and a sticky
+   button area. Keeping the scroll here (rather than on the page) is what lets
+   the sticky button stay pinned inside the 375pt frame. */
+.lds-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .lds-divider {
   height: 1px;
   background: var(--color-separator);
@@ -84,6 +94,13 @@
 }
 .lds-topnav__right { justify-content: flex-end; }
 
+/* [SPEC] The right area may hold a text button as well as icons. */
+.lds-topnav__action {
+  font: var(--type-title-5);
+  color: var(--color-text-link);
+  cursor: pointer;
+}
+
 .lds-icon-button {
   display: inline-grid;
   place-items: center;
@@ -118,6 +135,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font: var(--type-title-4);
+  text-decoration: none;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard),
               opacity var(--duration-fast) var(--ease-standard);
@@ -383,6 +401,10 @@
   color: var(--color-text-secondary);
   flex: none;
 }
+.lds-avatar--brand {
+  background: var(--color-brand-subtle);
+  color: var(--color-brand);
+}
 
 /* List Header — LDSM / Components / List Header */
 .lds-list-header {
@@ -539,6 +561,13 @@
 }
 .lds-sheet__title { font: var(--type-title-3); }
 
+/* [SPEC] Using an X button to dismiss the sheet is recommended. */
+.lds-sheet__close {
+  font-size: 15px;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+}
+
 .lds-sheet__content { overflow-y: auto; }
 
 .lds-sheet__buttons {
@@ -549,11 +578,16 @@
    Snackbar — LDSM / Components / Snackbar
    -------------------------------------------------------------------------- */
 
+/* Floats above the content near the bottom of the screen, below any sheet.
+   The nearest positioned ancestor is the screen, not the page. */
 .lds-snackbar {
+  position: absolute;
+  inset-inline: var(--screen-margin);
+  bottom: 78px;
+  z-index: 4;
   display: flex;
   align-items: center;
   gap: var(--space-5);
-  margin-inline: var(--screen-margin);
   padding: var(--space-5) var(--space-6);
   border-radius: var(--radius-md);
   background: rgba(31, 31, 31, 0.94);
@@ -713,18 +747,22 @@
   padding: var(--space-3);
 }
 
-/* Map surface placeholder — replaced by the Kakao Maps SDK canvas. */
+/* Map surface placeholder — replaced by the Kakao Maps SDK canvas.
+   Markers are positioned with inline top/left percentages by the caller, so
+   the surface establishes the containing block. */
 .app-map {
   position: relative;
-  aspect-ratio: 5 / 4;
+  height: 180px;
+  flex: none;
   background:
-    repeating-linear-gradient(0deg, transparent 0 23px, var(--color-separator) 23px 24px),
-    repeating-linear-gradient(90deg, transparent 0 23px, var(--color-separator) 23px 24px),
+    repeating-linear-gradient(0deg, transparent 0 19px, var(--color-separator) 19px 20px),
+    repeating-linear-gradient(90deg, transparent 0 19px, var(--color-separator) 19px 20px),
     var(--color-bg-secondary);
-  display: grid;
-  place-items: center;
 }
+
+/* The recommended meeting point. */
 .app-map__pin {
+  position: absolute;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -734,6 +772,20 @@
   color: var(--color-text-on-fill);
   font: var(--type-title-5);
   box-shadow: var(--elevation-2);
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+/* One participant's origin. Colors are assigned by the caller and match the
+   per-person colors used in the fairness meter. */
+.app-map__dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-bg-primary);
+  box-shadow: 0 0 0 1px var(--color-separator-strong);
+  transform: translate(-50%, -50%);
 }
 
 @media (prefers-reduced-motion: reduce) {
