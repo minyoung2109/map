@@ -1,0 +1,276 @@
+/* ==========================================================================
+   Design Tokens — LDS-derived
+   --------------------------------------------------------------------------
+   Source: LINE Design System for Messenger (LDSM), public documentation
+     - Color / LINE Color Guide, LINE Semantic Colors, Color Usage
+     - Foundation / Typography
+     - Foundation / Layout
+   https://designsystem.line.me/
+
+   Values are marked [SPEC] when published verbatim by LDSM, and [DERIVED]
+   when LDSM defines the concept but not the number (their swatch data is
+   rendered client-side and not published as machine-readable tokens).
+
+   NOTE ON BRAND COLOR: --lds-green-500 (#06C755) is LINE's trademarked brand
+   green. It is used here because this project deliberately adopts the LDS
+   look. If this product ever ships commercially, swap --brand-* only — every
+   component reads the brand through those three tokens.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     1. PALETTE — LINE Color Guide
+     Raw values. Never reference these directly from components; go through
+     the semantic layer in section 2 so dark mode resolves correctly.
+     --------------------------------------------------------------------- */
+
+  /* Green — primary / positive [SPEC: 500 is LINE Green #06C755] */
+  --lds-green-300: #1FC857;
+  --lds-green-500: #06C755;
+  --lds-green-600: #07B53B; /* pressed */
+  --lds-green-700: #1BB34E;
+
+  /* Red — destructive / error [SPEC: LINE Red] */
+  --lds-red-400: #FF3A44;
+  --lds-red-500: #FF334B;
+  --lds-red-600: #E62B41; /* pressed [DERIVED] */
+
+  /* Blue — link / informational [SPEC: LINE Blue] */
+  --lds-blue-500: #4D73FF;
+  --lds-blue-600: #4270ED; /* pressed */
+
+  /* Orange — caution [SPEC: observed in LDS site palette] */
+  --lds-orange-500: #FA9E1E;
+
+  /* Gray ramp [SPEC: observed in LDS site palette] */
+  --lds-gray-50:  #FCFCFC;
+  --lds-gray-100: #F5F5F5;
+  --lds-gray-200: #EFEFEF;
+  --lds-gray-300: #E5E5E5;
+  --lds-gray-400: #D9D9D9;
+  --lds-gray-500: #B7B7B7;
+  --lds-gray-600: #949494;
+  --lds-gray-700: #717171;
+  --lds-gray-800: #454545;
+  --lds-gray-900: #1F1F1F;
+  --lds-white: #FFFFFF;
+  --lds-black: #000000;
+
+  /* ---------------------------------------------------------------------
+     2. SEMANTIC COLORS
+     LDSM naming convention: role + numeral (Primary → Quinary), one value
+     per color mode. [SPEC: primaryText resolves #111111 light / #FFFFFF dark]
+     --------------------------------------------------------------------- */
+
+  --color-text-primary:    #111111;
+  --color-text-secondary:  var(--lds-gray-700);
+  --color-text-tertiary:   var(--lds-gray-600);
+  --color-text-quaternary: var(--lds-gray-500);
+  --color-text-on-fill:    var(--lds-white);
+  --color-text-link:       var(--lds-blue-500);
+  --color-text-error:      var(--lds-red-500);
+
+  --color-bg-primary:   var(--lds-white);
+  --color-bg-secondary: #F7F8F9;
+  --color-bg-tertiary:  var(--lds-gray-200);
+  --color-bg-pressed:   rgba(0, 0, 0, 0.06);
+
+  --color-separator:        var(--lds-gray-300);
+  --color-separator-strong: var(--lds-gray-400);
+
+  --color-brand:         var(--lds-green-500);
+  --color-brand-pressed: var(--lds-green-600);
+  --color-brand-subtle:  rgba(6, 199, 85, 0.10);
+
+  --color-danger:        var(--lds-red-500);
+  --color-danger-subtle: rgba(255, 51, 75, 0.10);
+  --color-caution:       var(--lds-orange-500);
+  --color-info-subtle:   rgba(77, 115, 255, 0.10);
+
+  --color-scrim: rgba(0, 0, 0, 0.60);
+
+  /* ---------------------------------------------------------------------
+     3. TYPOGRAPHY
+     [SPEC] LDSM uses each OS's system font — no webfont is shipped.
+     [SPEC] Sizes below are the published LDSM type scale, in points.
+     [SPEC] Sizes under 12pt are not permitted.
+     Line heights are [DERIVED]: 1.4 for body copy, 1.3 for headings/titles.
+     --------------------------------------------------------------------- */
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+               "Pretendard", "Noto Sans KR", "Malgun Gothic", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-heavy:    800;
+
+  /* Heading — largest text on screen, delivers key information fast */
+  --type-heading-1: var(--weight-heavy) 24px/1.3 var(--font-sans);
+  --type-heading-2: var(--weight-bold) 17px/1.3 var(--font-sans);
+  --type-heading-3: var(--weight-bold) 14px/1.3 var(--font-sans);
+  --type-heading-4: var(--weight-regular) 13px/1.4 var(--font-sans);
+
+  /* Title — hierarchy inside components */
+  --type-title-1: var(--weight-bold) 23px/1.3 var(--font-sans);
+  --type-title-2: var(--weight-semibold) 19px/1.3 var(--font-sans);
+  --type-title-3: var(--weight-semibold) 16px/1.35 var(--font-sans);
+  --type-title-4: var(--weight-medium) 15px/1.35 var(--font-sans);
+  --type-title-5: var(--weight-medium) 14px/1.35 var(--font-sans);
+
+  /* Body — running text and line text */
+  --type-body-1: var(--weight-regular) 16px/1.5 var(--font-sans);
+  --type-body-2: var(--weight-regular) 14px/1.5 var(--font-sans);
+  --type-body-3: var(--weight-regular) 13px/1.5 var(--font-sans);
+  --type-body-4: var(--weight-regular) 12px/1.4 var(--font-sans);
+
+  /* ---------------------------------------------------------------------
+     4. LAYOUT
+     [SPEC] Every screen uses a common 16pt left/right margin. Card interiors
+     use the same 16pt margin. Column specs are published for a 375pt frame:
+       2 column — width 167, gutter  9, margin 16
+       3 column — width 109, gutter  8, margin 16
+       4 column — width  82, gutter  5, margin 16
+     [SPEC] On resolution change the gutter is held and column width scales.
+     --------------------------------------------------------------------- */
+
+  --screen-margin: 16px;
+  --frame-width: 375px;
+
+  --gutter-2col: 9px;
+  --gutter-3col: 8px;
+  --gutter-4col: 5px;
+
+  /* Spacing scale [DERIVED] — 4pt base, anchored on the 16pt margin */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 20px;
+  --space-8: 24px;
+  --space-9: 32px;
+  --space-10: 40px;
+
+  /* ---------------------------------------------------------------------
+     5. SHAPE & ELEVATION [DERIVED]
+     LDSM specifies radii per component visually but does not publish a
+     numeric shape scale. These match the rendered LINE app closely.
+     --------------------------------------------------------------------- */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;   /* Box Button */
+  --radius-md: 8px;
+  --radius-lg: 12px;  /* Card */
+  --radius-xl: 16px;  /* Bottom Sheet top corners */
+  --radius-full: 999px; /* Capsule Button, Chips */
+
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --elevation-3: 0 -2px 12px rgba(0, 0, 0, 0.10); /* sticky / sheet */
+
+  /* ---------------------------------------------------------------------
+     6. CONTROL SIZES [DERIVED from LDSM Box Button XSmall–XLarge]
+     --------------------------------------------------------------------- */
+
+  --control-h-xs: 28px;
+  --control-h-sm: 36px;
+  --control-h-md: 44px;
+  --control-h-lg: 50px;
+  --control-h-xl: 56px;
+
+  --touch-target-min: 44px;
+
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Dark mode
+   LDSM ships Semantic Colors specifically so a single token resolves to a
+   different value per color mode. Only the semantic layer is redefined —
+   never restyle components inside the media query.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary:    var(--lds-white);
+    --color-text-secondary:  var(--lds-gray-500);
+    --color-text-tertiary:   var(--lds-gray-600);
+    --color-text-quaternary: var(--lds-gray-700);
+
+    --color-bg-primary:   #111111;
+    --color-bg-secondary: var(--lds-gray-900);
+    --color-bg-tertiary:  #2A2A2A;
+    --color-bg-pressed:   rgba(255, 255, 255, 0.08);
+
+    --color-separator:        #3F3F3F;
+    --color-separator-strong: var(--lds-gray-800);
+
+    --color-brand-subtle: rgba(6, 199, 85, 0.16);
+    --color-danger-subtle: rgba(255, 51, 75, 0.16);
+    --color-info-subtle: rgba(77, 115, 255, 0.18);
+
+    --color-scrim: rgba(0, 0, 0, 0.72);
+
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.6);
+    --elevation-3: 0 -2px 12px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Explicit theme selection overrides the OS preference in both directions. */
+:root[data-theme="dark"] {
+  --color-text-primary:    var(--lds-white);
+  --color-text-secondary:  var(--lds-gray-500);
+  --color-text-tertiary:   var(--lds-gray-600);
+  --color-text-quaternary: var(--lds-gray-700);
+
+  --color-bg-primary:   #111111;
+  --color-bg-secondary: var(--lds-gray-900);
+  --color-bg-tertiary:  #2A2A2A;
+  --color-bg-pressed:   rgba(255, 255, 255, 0.08);
+
+  --color-separator:        #3F3F3F;
+  --color-separator-strong: var(--lds-gray-800);
+
+  --color-brand-subtle: rgba(6, 199, 85, 0.16);
+  --color-danger-subtle: rgba(255, 51, 75, 0.16);
+  --color-info-subtle: rgba(77, 115, 255, 0.18);
+
+  --color-scrim: rgba(0, 0, 0, 0.72);
+
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --elevation-3: 0 -2px 12px rgba(0, 0, 0, 0.7);
+}
+
+:root[data-theme="light"] {
+  --color-text-primary:    #111111;
+  --color-text-secondary:  var(--lds-gray-700);
+  --color-text-tertiary:   var(--lds-gray-600);
+  --color-text-quaternary: var(--lds-gray-500);
+
+  --color-bg-primary:   var(--lds-white);
+  --color-bg-secondary: #F7F8F9;
+  --color-bg-tertiary:  var(--lds-gray-200);
+  --color-bg-pressed:   rgba(0, 0, 0, 0.06);
+
+  --color-separator:        var(--lds-gray-300);
+  --color-separator-strong: var(--lds-gray-400);
+
+  --color-brand-subtle: rgba(6, 199, 85, 0.10);
+  --color-danger-subtle: rgba(255, 51, 75, 0.10);
+  --color-info-subtle: rgba(77, 115, 255, 0.10);
+
+  --color-scrim: rgba(0, 0, 0, 0.60);
+
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --elevation-2: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --elevation-3: 0 -2px 12px rgba(0, 0, 0, 0.10);
+}

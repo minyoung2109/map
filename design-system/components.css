@@ -1,0 +1,744 @@
+/* ==========================================================================
+   Components — LDS-derived
+   --------------------------------------------------------------------------
+   Each block cites the LDSM component page it implements. Anatomy numbering
+   follows LDSM's own numbering so a designer reading their docs and a
+   developer reading this file are talking about the same parts.
+
+   Requires tokens.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+.lds-screen {
+  width: 100%;
+  max-width: var(--frame-width);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font: var(--type-body-2);
+  display: flex;
+  flex-direction: column;
+}
+
+/* [SPEC] All screens use a common 16pt left/right margin. */
+.lds-margin { padding-inline: var(--screen-margin); }
+
+.lds-divider {
+  height: 1px;
+  background: var(--color-separator);
+  border: 0;
+  margin: 0;
+}
+
+/* Visible keyboard focus on every interactive element. */
+.lds-box-button:focus-visible,
+.lds-capsule:focus-visible,
+.lds-chip:focus-visible,
+.lds-icon-button:focus-visible,
+.lds-row:focus-visible,
+.lds-card:focus-visible,
+.lds-input__field:focus-visible {
+  outline: 2px solid var(--color-text-link);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Top Navigation — LDSM / Components / Top Navigation
+   Anatomy: 1 Title · 2 Left button area · 3 Right button area · 4 Container
+   Types: Emphasis (top-level, bold title left) · Regular (after depth entry,
+   title centered) · Search (search is the screen's primary task)
+   -------------------------------------------------------------------------- */
+
+.lds-topnav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 48px;
+  padding-inline: var(--screen-margin);
+  background: var(--color-bg-primary);
+}
+
+.lds-topnav__title {
+  font: var(--type-title-3);
+  color: var(--color-text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lds-topnav--emphasis { min-height: 56px; }
+.lds-topnav--emphasis .lds-topnav__title { font: var(--type-heading-1); }
+
+.lds-topnav--regular .lds-topnav__title { text-align: center; }
+
+.lds-topnav__left,
+.lds-topnav__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 24px;
+}
+.lds-topnav__right { justify-content: flex-end; }
+
+.lds-icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  margin-inline: calc(var(--space-5) * -1);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 18px;
+  cursor: pointer;
+}
+.lds-icon-button:hover { background: var(--color-bg-pressed); }
+
+/* --------------------------------------------------------------------------
+   Box Button — LDSM / Components / Box Button
+   Anatomy: 1 Button container · 2 Button label area
+   Styles: Solid (background filled with primary green) · Outline (lower
+   priority than solid). Red is reserved for destructive actions.
+   States: Active · Inactive · Pressed · Loading
+   Sizes: XSmall · Small · Medium · Large · XLarge
+   -------------------------------------------------------------------------- */
+
+.lds-box-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: var(--control-h-lg);
+  padding-inline: var(--space-7);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font: var(--type-title-4);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* Solid — the default form. */
+.lds-box-button {
+  background: var(--color-brand);
+  color: var(--color-text-on-fill);
+}
+.lds-box-button:active { background: var(--color-brand-pressed); }
+
+.lds-box-button--danger { background: var(--color-danger); }
+.lds-box-button--danger:active { background: var(--lds-red-600); }
+
+/* Outline — no background fill, one priority step below solid. */
+.lds-box-button--outline {
+  background: transparent;
+  border-color: var(--color-separator-strong);
+  color: var(--color-text-primary);
+}
+.lds-box-button--outline:active { background: var(--color-bg-pressed); }
+
+/* [SPEC] Inactive: the user cannot select the button. */
+.lds-box-button:disabled,
+.lds-box-button--inactive {
+  background: var(--color-bg-tertiary);
+  border-color: transparent;
+  color: var(--color-text-quaternary);
+  cursor: not-allowed;
+}
+
+.lds-box-button--xs { height: var(--control-h-xs); padding-inline: var(--space-5); font: var(--type-body-4); }
+.lds-box-button--sm { height: var(--control-h-sm); padding-inline: var(--space-6); font: var(--type-body-3); }
+.lds-box-button--md { height: var(--control-h-md); font: var(--type-title-5); }
+.lds-box-button--lg { height: var(--control-h-lg); }
+.lds-box-button--xl { height: var(--control-h-xl); font: var(--type-title-3); }
+
+.lds-box-button--full { width: 100%; }
+
+/* [SPEC] Horizontal pairing: the primary action sits on the right. */
+.lds-button-group {
+  display: flex;
+  gap: var(--space-4);
+}
+.lds-button-group > .lds-box-button { flex: 1; }
+
+/* [SPEC] Vertical pairing: the primary action sits on top. */
+.lds-button-group--vertical { flex-direction: column; }
+
+/* [SPEC] Sticky Button: fixed at the bottom, above scrolled content, the
+   highest hierarchy on the screen except dialogs and sheets. */
+.lds-sticky-button {
+  position: sticky;
+  bottom: 0;
+  padding: var(--space-5) var(--screen-margin) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  background: var(--color-bg-primary);
+  box-shadow: var(--elevation-3);
+}
+
+/* --------------------------------------------------------------------------
+   Capsule Button — LDSM / Components / Capsule Button
+   Anatomy: 1 Button background · 2 Text area · 3 Image area (optional)
+   Types: Green (conspicuous highlight) · Mono (weaker highlight)
+   -------------------------------------------------------------------------- */
+
+.lds-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--control-h-sm);
+  padding-inline: var(--space-6);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-brand);
+  color: var(--color-text-on-fill);
+  font: var(--type-title-5);
+  box-shadow: var(--elevation-2);
+  cursor: pointer;
+}
+
+.lds-capsule--mono {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-separator);
+}
+
+/* --------------------------------------------------------------------------
+   Chips — LDSM / Components / Chips
+   Anatomy: 1 Container (filled or stroke) · 2 Image area (optional) · 3 Label
+   Types: Action · Filter (single or multi) · Choice
+   States: Deselected · Selected (selection is shown with a contour color)
+   -------------------------------------------------------------------------- */
+
+.lds-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--control-h-sm);
+  padding-inline: var(--space-5);
+  border: 1px solid var(--color-separator-strong);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font: var(--type-body-2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+              background-color var(--duration-fast) var(--ease-standard);
+}
+
+.lds-chip[aria-pressed="true"],
+.lds-chip--selected {
+  border-color: var(--color-brand);
+  background: var(--color-brand-subtle);
+  color: var(--color-brand);
+  font-weight: var(--weight-semibold);
+}
+
+.lds-chip:disabled,
+.lds-chip--disabled {
+  border-color: var(--color-separator);
+  color: var(--color-text-quaternary);
+  cursor: not-allowed;
+}
+
+/* [SPEC] List chips left to right; wrap to the next line when the next chip
+   is wider than the remaining margin, or make the row swipeable. */
+.lds-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.lds-chip-row--scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-inline: var(--screen-margin);
+  margin-inline: calc(var(--screen-margin) * -1);
+}
+.lds-chip-row--scroll::-webkit-scrollbar { display: none; }
+
+/* --------------------------------------------------------------------------
+   Inputs — LDSM / Components / Inputs
+   Anatomy: 1 Underline (required) · 2 Text area · 3 Reset button ·
+            4 Label · 5 Required mark · 6 Helper text · 7 Text counter
+   Underline color: default / green when focused / red on error.
+   The required mark is a red asterisk to the right of the label.
+   -------------------------------------------------------------------------- */
+
+.lds-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.lds-input__label {
+  font: var(--type-body-3);
+  color: var(--color-text-secondary);
+}
+.lds-input__required { color: var(--color-danger); }
+
+.lds-input__control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-separator-strong);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+.lds-input__control:focus-within { border-bottom-color: var(--color-brand); }
+
+.lds-input__field {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font: var(--type-body-1);
+  outline: none;
+}
+.lds-input__field::placeholder { color: var(--color-text-quaternary); }
+
+.lds-input__reset {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-text-quaternary);
+  color: var(--color-bg-primary);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lds-input__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font: var(--type-body-4);
+  color: var(--color-text-tertiary);
+}
+.lds-input__counter { font-variant-numeric: tabular-nums; }
+
+.lds-input--error .lds-input__control { border-bottom-color: var(--color-danger); }
+.lds-input--error .lds-input__footer { color: var(--color-text-error); }
+
+/* --------------------------------------------------------------------------
+   List — LDSM / Components / List
+   Anatomy: 1 List · 2 Row · 3 Item content
+            3-1 Left area (image, profile, icon) · 3-2 Text area ·
+            3-3 Right area (icons, text buttons, values)
+   States: Normal · Highlighted (new or added item) · Pressed
+   -------------------------------------------------------------------------- */
+
+.lds-list { display: flex; flex-direction: column; }
+
+.lds-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-5);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-5) var(--screen-margin);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.lds-row:active { background: var(--color-bg-pressed); }
+.lds-row--highlighted { background: var(--color-brand-subtle); }
+
+.lds-row__left { display: grid; place-items: center; }
+.lds-row__text { min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.lds-row__title {
+  font: var(--type-title-5);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lds-row__desc { font: var(--type-body-3); color: var(--color-text-tertiary); }
+.lds-row__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--type-body-3);
+  color: var(--color-text-tertiary);
+}
+
+.lds-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+  display: grid;
+  place-items: center;
+  font: var(--type-title-5);
+  color: var(--color-text-secondary);
+  flex: none;
+}
+
+/* List Header — LDSM / Components / List Header */
+.lds-list-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-7) var(--screen-margin) var(--space-4);
+}
+.lds-list-header__title { font: var(--type-heading-2); color: var(--color-text-primary); }
+.lds-list-header__aux { font: var(--type-body-3); color: var(--color-text-tertiary); }
+
+/* --------------------------------------------------------------------------
+   Card — LDSM / Components / Card
+   Anatomy: 1 Image area · 2 Text area · 3 Indicators (optional) ·
+            4 Action area (optional)
+   Types: Surface (image and text split inside the card) · Full image
+   Placement: Single · Collection (vertical or horizontal)
+   [SPEC] Card interiors use the same 16pt margin as the screen.
+   -------------------------------------------------------------------------- */
+
+.lds-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-separator);
+  overflow: hidden;
+  text-align: start;
+  cursor: pointer;
+}
+.lds-card:active { background: var(--color-bg-pressed); }
+
+.lds-card__media {
+  aspect-ratio: 16 / 9;
+  background: var(--color-bg-tertiary);
+  display: grid;
+  place-items: center;
+  color: var(--color-text-quaternary);
+  font: var(--type-body-4);
+}
+
+.lds-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--screen-margin);
+}
+.lds-card__title { font: var(--type-title-3); color: var(--color-text-primary); }
+.lds-card__desc { font: var(--type-body-3); color: var(--color-text-secondary); }
+
+.lds-card__actions {
+  display: flex;
+  gap: var(--space-4);
+  padding: 0 var(--screen-margin) var(--screen-margin);
+}
+
+/* [SPEC] Indicators may sit at any of the four corners of the card. */
+.lds-card__indicator {
+  position: absolute;
+  top: var(--space-4);
+  inset-inline-end: var(--space-4);
+}
+
+/* Collection — vertical scroll or horizontal swipe. */
+.lds-card-collection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-inline: var(--screen-margin);
+}
+.lds-card-collection--horizontal {
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+.lds-card-collection--horizontal > .lds-card {
+  flex: 0 0 78%;
+  scroll-snap-align: start;
+}
+
+/* --------------------------------------------------------------------------
+   Badge — LDSM / Components / Badge
+   -------------------------------------------------------------------------- */
+
+.lds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 22px;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font: var(--type-body-4);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.lds-badge--brand { background: var(--color-brand-subtle); color: var(--color-brand); }
+.lds-badge--danger { background: var(--color-danger-subtle); color: var(--color-danger); }
+.lds-badge--info { background: var(--color-info-subtle); color: var(--color-text-link); }
+.lds-badge--caution { background: rgba(250, 158, 30, 0.14); color: #B36F00; }
+
+@media (prefers-color-scheme: dark) {
+  :root { --badge-caution-fg: var(--lds-orange-500); }
+}
+.lds-badge--caution { color: var(--badge-caution-fg, #B36F00); }
+
+/* --------------------------------------------------------------------------
+   Bottom Sheet — LDSM / Components / Bottom Sheet
+   Anatomy: 1 Sheet · 2 Scrim (optional) · 3 Header area (optional) ·
+            4 Contents area · 5 Button area (optional) · 6 Handlebar (optional)
+   Types: Modal (scrim present) · Interactive (no scrim)
+   [SPEC] A handlebar means the sheet is expandable. Close via action, scrim
+   tap, swipe down, or close button — an X button is recommended.
+   -------------------------------------------------------------------------- */
+
+.lds-sheet-host { position: relative; overflow: hidden; }
+
+.lds-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--color-scrim);
+}
+
+.lds-sheet {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--color-bg-primary);
+  box-shadow: var(--elevation-3);
+}
+
+.lds-sheet__handlebar {
+  width: 36px;
+  height: 4px;
+  margin: var(--space-4) auto var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--color-separator-strong);
+  flex: none;
+}
+
+.lds-sheet__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--screen-margin);
+}
+.lds-sheet__title { font: var(--type-title-3); }
+
+.lds-sheet__content { overflow-y: auto; }
+
+.lds-sheet__buttons {
+  padding: var(--space-5) var(--screen-margin) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+}
+
+/* --------------------------------------------------------------------------
+   Snackbar — LDSM / Components / Snackbar
+   -------------------------------------------------------------------------- */
+
+.lds-snackbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin-inline: var(--screen-margin);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-md);
+  background: rgba(31, 31, 31, 0.94);
+  color: var(--lds-white);
+  font: var(--type-body-3);
+  box-shadow: var(--elevation-2);
+}
+.lds-snackbar__action {
+  margin-inline-start: auto;
+  border: 0;
+  background: transparent;
+  color: var(--lds-green-300);
+  font: var(--type-title-5);
+  cursor: pointer;
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   Empty — LDSM / Components / Empty
+   -------------------------------------------------------------------------- */
+
+.lds-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-10) var(--screen-margin);
+  text-align: center;
+}
+.lds-empty__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+}
+.lds-empty__title { font: var(--type-title-3); }
+.lds-empty__desc {
+  font: var(--type-body-3);
+  color: var(--color-text-secondary);
+  max-width: 30ch;
+}
+
+/* --------------------------------------------------------------------------
+   Progress Indicator — LDSM / Components / Progress Indicator
+   -------------------------------------------------------------------------- */
+
+.lds-progress {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+  overflow: hidden;
+}
+.lds-progress__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-brand);
+}
+
+/* ==========================================================================
+   Product layer
+   Composed from the LDS primitives above. These are specific to this app and
+   are not part of LDSM; they are named with an `app-` prefix so the boundary
+   between the adopted system and our own additions stays visible.
+   ========================================================================== */
+
+/* Fairness meter — how evenly travel time is split across participants.
+   Time equity is the primary ranking signal, so it gets a form, not just a
+   number: a bar plus the spread in minutes. */
+.app-fairness {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.app-fairness__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font: var(--type-body-4);
+  color: var(--color-text-tertiary);
+}
+.app-fairness__value {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.app-fairness__track {
+  display: flex;
+  height: 6px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--color-bg-tertiary);
+}
+.app-fairness__seg { height: 100%; }
+.app-fairness__seg:nth-child(1) { background: var(--lds-green-500); }
+.app-fairness__seg:nth-child(2) { background: var(--lds-blue-500); }
+.app-fairness__seg:nth-child(3) { background: var(--lds-orange-500); }
+.app-fairness__seg:nth-child(4) { background: var(--lds-gray-500); }
+
+/* Per-person travel readout. */
+.app-legs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  font: var(--type-body-4);
+  color: var(--color-text-secondary);
+}
+.app-leg { display: inline-flex; align-items: center; gap: var(--space-2); }
+.app-leg__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex: none;
+}
+.app-leg__time { font-variant-numeric: tabular-nums; color: var(--color-text-primary); }
+
+/* Course timeline — the schedule built from the selected categories.
+   Rows are reorderable; the grip is the affordance. */
+.app-timeline {
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--screen-margin);
+}
+.app-timeline__item {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  gap: var(--space-5);
+  padding-block: var(--space-5);
+  position: relative;
+}
+.app-timeline__item + .app-timeline__item::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 25px;
+  top: 0;
+  bottom: 50%;
+  width: 2px;
+  background: var(--color-separator);
+}
+.app-timeline__time {
+  font: var(--type-title-5);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+  position: relative;
+  z-index: 1;
+}
+.app-timeline__body { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.app-timeline__title { font: var(--type-title-4); }
+.app-timeline__meta { font: var(--type-body-4); color: var(--color-text-tertiary); }
+.app-timeline__grip {
+  align-self: center;
+  color: var(--color-text-quaternary);
+  font-size: 16px;
+  cursor: grab;
+  padding: var(--space-3);
+}
+
+/* Map surface placeholder — replaced by the Kakao Maps SDK canvas. */
+.app-map {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--color-separator) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, var(--color-separator) 23px 24px),
+    var(--color-bg-secondary);
+  display: grid;
+  place-items: center;
+}
+.app-map__pin {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--color-brand);
+  color: var(--color-text-on-fill);
+  font: var(--type-title-5);
+  box-shadow: var(--elevation-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

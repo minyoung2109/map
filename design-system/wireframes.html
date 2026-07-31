@@ -1,0 +1,646 @@
+<title>중간 지점 와이어프레임</title>
+
+<style>
+/* ============================================================
+   TOKENS — mirrors design-system/tokens.css (LDSM-derived)
+   ============================================================ */
+:root{
+  --lds-green-300:#1FC857;--lds-green-500:#06C755;--lds-green-600:#07B53B;--lds-green-700:#1BB34E;
+  --lds-red-400:#FF3A44;--lds-red-500:#FF334B;--lds-red-600:#E62B41;
+  --lds-blue-500:#4D73FF;--lds-blue-600:#4270ED;
+  --lds-orange-500:#FA9E1E;
+  --lds-gray-50:#FCFCFC;--lds-gray-100:#F5F5F5;--lds-gray-200:#EFEFEF;--lds-gray-300:#E5E5E5;
+  --lds-gray-400:#D9D9D9;--lds-gray-500:#B7B7B7;--lds-gray-600:#949494;--lds-gray-700:#717171;
+  --lds-gray-800:#454545;--lds-gray-900:#1F1F1F;--lds-white:#FFFFFF;--lds-black:#000000;
+
+  --color-text-primary:#111111;--color-text-secondary:var(--lds-gray-700);
+  --color-text-tertiary:var(--lds-gray-600);--color-text-quaternary:var(--lds-gray-500);
+  --color-text-on-fill:var(--lds-white);--color-text-link:var(--lds-blue-500);--color-text-error:var(--lds-red-500);
+
+  --color-bg-primary:var(--lds-white);--color-bg-secondary:#F7F8F9;--color-bg-tertiary:var(--lds-gray-200);
+  --color-bg-pressed:rgba(0,0,0,.06);
+  --color-separator:var(--lds-gray-300);--color-separator-strong:var(--lds-gray-400);
+
+  --color-brand:var(--lds-green-500);--color-brand-pressed:var(--lds-green-600);
+  --color-brand-subtle:rgba(6,199,85,.10);
+  --color-danger:var(--lds-red-500);--color-danger-subtle:rgba(255,51,75,.10);
+  --color-caution:var(--lds-orange-500);--color-info-subtle:rgba(77,115,255,.10);
+  --color-scrim:rgba(0,0,0,.60);
+
+  --font-sans:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;--weight-heavy:800;
+
+  --type-heading-1:var(--weight-heavy) 24px/1.3 var(--font-sans);
+  --type-heading-2:var(--weight-bold) 17px/1.3 var(--font-sans);
+  --type-title-1:var(--weight-bold) 23px/1.3 var(--font-sans);
+  --type-title-2:var(--weight-semibold) 19px/1.3 var(--font-sans);
+  --type-title-3:var(--weight-semibold) 16px/1.35 var(--font-sans);
+  --type-title-4:var(--weight-medium) 15px/1.35 var(--font-sans);
+  --type-title-5:var(--weight-medium) 14px/1.35 var(--font-sans);
+  --type-body-1:var(--weight-regular) 16px/1.5 var(--font-sans);
+  --type-body-2:var(--weight-regular) 14px/1.5 var(--font-sans);
+  --type-body-3:var(--weight-regular) 13px/1.5 var(--font-sans);
+  --type-body-4:var(--weight-regular) 12px/1.4 var(--font-sans);
+
+  --screen-margin:16px;--frame-width:375px;
+  --space-1:2px;--space-2:4px;--space-3:6px;--space-4:8px;--space-5:12px;--space-6:16px;--space-7:20px;--space-8:24px;--space-9:32px;--space-10:40px;
+
+  --radius-xs:4px;--radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:999px;
+  --elevation-1:0 1px 2px rgba(0,0,0,.06);--elevation-2:0 2px 8px rgba(0,0,0,.08);--elevation-3:0 -2px 12px rgba(0,0,0,.10);
+
+  --control-h-xs:28px;--control-h-sm:36px;--control-h-md:44px;--control-h-lg:50px;--control-h-xl:56px;
+  --duration-fast:120ms;--ease-standard:cubic-bezier(.2,0,.2,1);
+
+  --canvas:var(--lds-gray-100);
+  --doc-border:var(--lds-gray-300);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --color-text-primary:var(--lds-white);--color-text-secondary:var(--lds-gray-500);
+    --color-text-tertiary:var(--lds-gray-600);--color-text-quaternary:var(--lds-gray-700);
+    --color-bg-primary:#111111;--color-bg-secondary:var(--lds-gray-900);--color-bg-tertiary:#2A2A2A;
+    --color-bg-pressed:rgba(255,255,255,.08);
+    --color-separator:#3F3F3F;--color-separator-strong:var(--lds-gray-800);
+    --color-brand-subtle:rgba(6,199,85,.16);--color-danger-subtle:rgba(255,51,75,.16);--color-info-subtle:rgba(77,115,255,.18);
+    --color-scrim:rgba(0,0,0,.72);
+    --elevation-1:0 1px 2px rgba(0,0,0,.5);--elevation-2:0 2px 8px rgba(0,0,0,.6);--elevation-3:0 -2px 12px rgba(0,0,0,.7);
+    --canvas:#0B0B0C;--doc-border:#2E2E30;
+    --badge-caution-fg:var(--lds-orange-500);
+  }
+}
+:root[data-theme="dark"]{
+  --badge-caution-fg:var(--lds-orange-500);
+  --color-text-primary:var(--lds-white);--color-text-secondary:var(--lds-gray-500);
+  --color-text-tertiary:var(--lds-gray-600);--color-text-quaternary:var(--lds-gray-700);
+  --color-bg-primary:#111111;--color-bg-secondary:var(--lds-gray-900);--color-bg-tertiary:#2A2A2A;
+  --color-bg-pressed:rgba(255,255,255,.08);
+  --color-separator:#3F3F3F;--color-separator-strong:var(--lds-gray-800);
+  --color-brand-subtle:rgba(6,199,85,.16);--color-danger-subtle:rgba(255,51,75,.16);--color-info-subtle:rgba(77,115,255,.18);
+  --color-scrim:rgba(0,0,0,.72);
+  --elevation-1:0 1px 2px rgba(0,0,0,.5);--elevation-2:0 2px 8px rgba(0,0,0,.6);--elevation-3:0 -2px 12px rgba(0,0,0,.7);
+  --canvas:#0B0B0C;--doc-border:#2E2E30;
+}
+:root[data-theme="light"]{
+  --color-text-primary:#111111;--color-text-secondary:var(--lds-gray-700);
+  --color-text-tertiary:var(--lds-gray-600);--color-text-quaternary:var(--lds-gray-500);
+  --color-bg-primary:var(--lds-white);--color-bg-secondary:#F7F8F9;--color-bg-tertiary:var(--lds-gray-200);
+  --color-bg-pressed:rgba(0,0,0,.06);
+  --color-separator:var(--lds-gray-300);--color-separator-strong:var(--lds-gray-400);
+  --color-brand-subtle:rgba(6,199,85,.10);--color-danger-subtle:rgba(255,51,75,.10);--color-info-subtle:rgba(77,115,255,.10);
+  --color-scrim:rgba(0,0,0,.60);
+  --elevation-1:0 1px 2px rgba(0,0,0,.06);--elevation-2:0 2px 8px rgba(0,0,0,.08);--elevation-3:0 -2px 12px rgba(0,0,0,.10);
+  --canvas:var(--lds-gray-100);--doc-border:var(--lds-gray-300);
+}
+
+/* ============================================================
+   DOCUMENT CHROME
+   ============================================================ */
+*{box-sizing:border-box;}
+body{margin:0;}
+.doc{
+  background:var(--canvas);
+  color:var(--color-text-primary);
+  font:var(--type-body-1);
+  min-height:100vh;
+}
+.doc-inner{max-width:1240px;margin:0 auto;padding:56px 24px 96px;}
+
+.doc-header{max-width:640px;margin-bottom:56px;}
+.doc-eyebrow{
+  font:var(--type-body-4);font-weight:var(--weight-semibold);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--color-text-tertiary);margin:0 0 12px;
+}
+.doc-title{
+  font:var(--weight-heavy) 32px/1.25 var(--font-sans);letter-spacing:-.01em;
+  text-wrap:balance;margin:0 0 14px;color:var(--color-text-primary);
+}
+.doc-lede{font:var(--type-body-1);color:var(--color-text-secondary);max-width:62ch;margin:0 0 20px;}
+.doc-meta{display:flex;flex-wrap:wrap;gap:8px 20px;font:var(--type-body-3);color:var(--color-text-tertiary);}
+.doc-meta a{color:var(--color-text-link);text-decoration:none;}
+.doc-meta a:hover{text-decoration:underline;}
+.doc-meta__item{display:flex;align-items:center;gap:6px;}
+.doc-meta__dot{width:5px;height:5px;border-radius:50%;background:var(--color-separator-strong);flex:none;}
+
+section.doc-section{margin-bottom:64px;}
+.doc-section__head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:20px;border-bottom:1px solid var(--doc-border);padding-bottom:14px;}
+.doc-section__title{font:var(--weight-bold) 20px/1.3 var(--font-sans);margin:0;}
+.doc-section__num{font:var(--type-body-3);color:var(--color-text-quaternary);font-variant-numeric:tabular-nums;}
+
+/* ---- Foundation: color ---- */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;}
+.swatch{border:1px solid var(--doc-border);border-radius:var(--radius-lg);overflow:hidden;background:var(--color-bg-primary);}
+.swatch__fill{height:64px;}
+.swatch__meta{padding:10px 12px;}
+.swatch__name{font:var(--type-title-5);display:block;}
+.swatch__hex{font:12px/1.4 ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;color:var(--color-text-tertiary);font-variant-numeric:tabular-nums;}
+.swatch__role{display:block;font:var(--type-body-4);color:var(--color-text-tertiary);margin-top:2px;}
+
+/* ---- Foundation: type ---- */
+.type-list{display:flex;flex-direction:column;border:1px solid var(--doc-border);border-radius:var(--radius-lg);background:var(--color-bg-primary);overflow:hidden;}
+.type-row{display:grid;grid-template-columns:120px 1fr auto;align-items:baseline;gap:16px;padding:14px 18px;border-bottom:1px solid var(--doc-border);}
+.type-row:last-child{border-bottom:0;}
+.type-row__label{font:var(--type-body-4);font-weight:var(--weight-semibold);color:var(--color-text-tertiary);letter-spacing:.03em;text-transform:uppercase;}
+.type-row__sample{color:var(--color-text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.type-row__spec{font:12px/1.4 ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;color:var(--color-text-quaternary);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+/* ---- Foundation: grid diagram ---- */
+.grid-demo{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;}
+.grid-frame{width:220px;flex:none;border:1px solid var(--doc-border);border-radius:var(--radius-lg);padding:0;background:var(--color-bg-primary);overflow:hidden;}
+.grid-frame__bar{height:22px;background:var(--color-bg-tertiary);}
+.grid-frame__body{display:flex;height:120px;}
+.grid-frame__margin{width:16px;background:var(--color-brand-subtle);flex:none;}
+.grid-frame__cols{flex:1;display:flex;gap:4px;padding:10px 0;}
+.grid-frame__col{flex:1;background:var(--color-bg-tertiary);border-radius:2px;}
+.grid-legend{font:var(--type-body-3);color:var(--color-text-secondary);max-width:34ch;}
+.grid-legend dt{font-weight:var(--weight-semibold);color:var(--color-text-primary);margin-top:10px;}
+.grid-legend dt:first-child{margin-top:0;}
+.grid-legend dd{margin:2px 0 0;color:var(--color-text-tertiary);font-variant-numeric:tabular-nums;}
+
+.foundation-note{
+  margin-top:20px;padding:14px 16px;border-radius:var(--radius-md);
+  background:var(--color-bg-secondary);border:1px solid var(--doc-border);
+  font:var(--type-body-3);color:var(--color-text-secondary);
+}
+.foundation-note b{color:var(--color-text-primary);}
+
+/* ============================================================
+   FRAME GALLERY
+   ============================================================ */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:40px 28px;
+}
+.frame-block{display:flex;flex-direction:column;gap:14px;}
+.frame-block__head{display:flex;align-items:baseline;gap:10px;}
+.frame-block__num{
+  font:var(--weight-bold) 13px/1 ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  color:var(--color-bg-primary);background:var(--color-text-primary);
+  border-radius:var(--radius-full);width:24px;height:24px;display:inline-grid;place-items:center;flex:none;
+}
+.frame-block__title{font:var(--weight-bold) 16px/1.3 var(--font-sans);margin:0;}
+.frame-block__caption{font:var(--type-body-3);color:var(--color-text-secondary);max-width:46ch;}
+
+/* Device chrome */
+.device{
+  width:100%;
+  max-width:var(--frame-width);
+  margin:0 auto;
+  border-radius:34px;
+  padding:10px;
+  background:linear-gradient(160deg,#3a3a3c,#1c1c1e);
+  box-shadow:var(--elevation-2), 0 18px 34px -18px rgba(0,0,0,.35);
+}
+.device__screen{
+  position:relative;
+  border-radius:26px;
+  overflow:hidden;
+  background:var(--color-bg-primary);
+  aspect-ratio:375/780;
+  display:flex;
+  flex-direction:column;
+  isolation:isolate;
+}
+.device__statusbar{
+  flex:none;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px 4px;font:var(--weight-semibold) 12px/1 var(--font-sans);
+  color:var(--color-text-primary);font-variant-numeric:tabular-nums;
+}
+.device__statusbar-icons{display:flex;align-items:center;gap:4px;}
+.device__sig{display:flex;align-items:flex-end;gap:1.5px;height:9px;}
+.device__sig i{width:2.5px;background:var(--color-text-primary);border-radius:1px;display:block;}
+.device__sig i:nth-child(1){height:40%;}.device__sig i:nth-child(2){height:60%;}
+.device__sig i:nth-child(3){height:80%;}.device__sig i:nth-child(4){height:100%;}
+.device__batt{width:20px;height:10px;border:1.2px solid var(--color-text-primary);border-radius:2.5px;position:relative;}
+.device__batt::after{content:"";position:absolute;inset:1.5px;background:var(--color-text-primary);border-radius:1px;width:70%;}
+.device__content{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;position:relative;}
+.device__home{flex:none;display:flex;justify-content:center;padding:8px 0 6px;}
+.device__home i{width:110px;height:4px;border-radius:99px;background:var(--color-text-primary);opacity:.35;}
+
+/* Reuse component classnames (lds-*, app-*) — same as design-system/components.css */
+.lds-screen{flex:1;min-height:0;display:flex;flex-direction:column;font:var(--type-body-2);color:var(--color-text-primary);}
+.lds-margin{padding-inline:var(--screen-margin);}
+.lds-scroll{flex:1;min-height:0;overflow-y:auto;}
+.lds-divider{height:1px;background:var(--color-separator);border:0;margin:0;}
+
+.lds-topnav{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;min-height:48px;padding-inline:var(--screen-margin);}
+.lds-topnav__title{font:var(--type-title-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lds-topnav--emphasis{min-height:52px;}
+.lds-topnav--emphasis .lds-topnav__title{font:var(--type-heading-1);}
+.lds-topnav--regular .lds-topnav__title{text-align:center;}
+.lds-topnav__left,.lds-topnav__right{display:flex;align-items:center;gap:4px;min-width:20px;font-size:15px;color:var(--color-text-primary);}
+.lds-topnav__right{justify-content:flex-end;}
+.lds-topnav__action{font:var(--type-title-5);color:var(--color-text-link);}
+
+.lds-box-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:var(--control-h-lg);padding-inline:20px;border:1px solid transparent;border-radius:var(--radius-sm);font:var(--type-title-4);background:var(--color-brand);color:var(--color-text-on-fill);}
+.lds-box-button--outline{background:transparent;border-color:var(--color-separator-strong);color:var(--color-text-primary);}
+.lds-box-button--full{width:100%;}
+.lds-box-button--sm{height:var(--control-h-sm);padding-inline:16px;font:var(--type-body-3);}
+.lds-box-button--inactive{background:var(--color-bg-tertiary);color:var(--color-text-quaternary);}
+.lds-button-group{display:flex;gap:8px;}
+.lds-button-group--vertical{flex-direction:column;}
+.lds-button-group--vertical>.lds-box-button{width:100%;}
+.lds-sticky-button{flex:none;padding:12px var(--screen-margin) 16px;background:var(--color-bg-primary);box-shadow:var(--elevation-3);}
+.lds-sticky-button__hint{display:block;text-align:center;font:var(--type-body-4);color:var(--color-text-tertiary);margin-bottom:8px;}
+
+.lds-capsule{display:inline-flex;align-items:center;gap:6px;height:var(--control-h-sm);padding-inline:16px;border:0;border-radius:var(--radius-full);font:var(--type-title-5);cursor:pointer;}
+.lds-capsule--mono{background:var(--color-bg-primary);color:var(--color-text-primary);border:1px dashed var(--color-separator-strong);}
+
+.lds-chip{display:inline-flex;align-items:center;gap:6px;height:var(--control-h-sm);padding-inline:14px;border:1px solid var(--color-separator-strong);border-radius:var(--radius-full);background:var(--color-bg-primary);color:var(--color-text-secondary);font:var(--type-body-2);white-space:nowrap;}
+.lds-chip--selected{border-color:var(--color-brand);background:var(--color-brand-subtle);color:var(--color-brand);font-weight:var(--weight-semibold);}
+.lds-chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+.lds-chip-row--scroll{flex-wrap:nowrap;overflow-x:auto;padding-inline:var(--screen-margin);margin-inline:calc(var(--screen-margin) * -1);scrollbar-width:none;}
+.lds-chip-row--scroll::-webkit-scrollbar{display:none;}
+
+.lds-input{display:flex;flex-direction:column;gap:4px;}
+.lds-input__label{font:var(--type-body-3);color:var(--color-text-secondary);}
+.lds-input__required{color:var(--color-danger);}
+.lds-input__control{display:flex;align-items:center;gap:8px;padding-block:8px;border-bottom:1px solid var(--color-brand);}
+.lds-input__field{flex:1;color:var(--color-text-primary);font:var(--type-body-1);}
+.lds-input__field.is-placeholder{color:var(--color-text-quaternary);}
+.lds-input__reset{width:18px;height:18px;border-radius:50%;background:var(--color-text-quaternary);color:var(--color-bg-primary);font-size:10px;line-height:18px;text-align:center;flex:none;}
+.lds-input__footer{font:var(--type-body-4);color:var(--color-text-tertiary);}
+
+.lds-list-header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:18px var(--screen-margin) 8px;}
+.lds-list-header__title{font:var(--type-heading-2);}
+.lds-list-header__aux{font:var(--type-body-3);color:var(--color-text-tertiary);}
+
+.lds-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px var(--screen-margin);}
+.lds-row__text{min-width:0;display:flex;flex-direction:column;gap:2px;}
+.lds-row__title{font:var(--type-title-5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lds-row__desc{font:var(--type-body-3);color:var(--color-text-tertiary);}
+.lds-row__right{display:flex;align-items:center;gap:6px;font:var(--type-body-3);color:var(--color-text-tertiary);}
+.lds-avatar{width:38px;height:38px;border-radius:50%;background:var(--color-bg-tertiary);display:grid;place-items:center;font:var(--type-title-5);color:var(--color-text-secondary);flex:none;}
+.lds-avatar--brand{background:var(--color-brand-subtle);color:var(--color-brand);}
+
+.lds-card{position:relative;display:flex;flex-direction:column;border-radius:var(--radius-lg);background:var(--color-bg-primary);border:1px solid var(--color-separator);overflow:hidden;}
+.lds-card__media{aspect-ratio:16/10;background:var(--color-bg-tertiary);display:grid;place-items:center;color:var(--color-text-quaternary);font:var(--type-body-4);}
+.lds-card__body{display:flex;flex-direction:column;gap:4px;padding:12px;}
+.lds-card__title{font:var(--type-title-4);}
+.lds-card__desc{font:var(--type-body-4);color:var(--color-text-secondary);}
+.lds-card__indicator{position:absolute;top:8px;inset-inline-end:8px;}
+.lds-card-collection{display:flex;flex-direction:column;gap:10px;padding-inline:var(--screen-margin);}
+.lds-card-collection--horizontal{flex-direction:row;overflow-x:auto;}
+.lds-card-collection--horizontal>.lds-card{flex:0 0 62%;}
+
+.lds-badge{display:inline-flex;align-items:center;gap:3px;height:20px;padding-inline:8px;border-radius:var(--radius-full);background:var(--color-bg-tertiary);color:var(--color-text-secondary);font:var(--type-body-4);font-weight:var(--weight-semibold);white-space:nowrap;}
+.lds-badge--brand{background:var(--color-brand-subtle);color:var(--color-brand);}
+.lds-badge--caution{background:rgba(250,158,30,.16);color:var(--badge-caution-fg,#B36F00);}
+.lds-badge--info{background:var(--color-info-subtle);color:var(--color-text-link);}
+
+.lds-scrim{position:absolute;inset:0;background:var(--color-scrim);z-index:5;}
+.lds-sheet{position:absolute;inset-inline:0;bottom:0;z-index:6;display:flex;flex-direction:column;max-height:78%;border-radius:18px 18px 0 0;background:var(--color-bg-primary);box-shadow:var(--elevation-3);}
+.lds-sheet__handlebar{width:32px;height:4px;margin:10px auto 2px;border-radius:99px;background:var(--color-separator-strong);flex:none;}
+.lds-sheet__header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px var(--screen-margin);}
+.lds-sheet__title{font:var(--type-title-3);}
+.lds-sheet__close{font-size:15px;color:var(--color-text-tertiary);}
+.lds-sheet__buttons{padding:10px var(--screen-margin) 16px;}
+
+.lds-snackbar{position:absolute;left:var(--screen-margin);right:var(--screen-margin);bottom:78px;z-index:4;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--radius-md);background:rgba(31,31,31,.94);color:#fff;font:var(--type-body-3);box-shadow:var(--elevation-2);}
+.lds-snackbar__action{margin-inline-start:auto;color:var(--lds-green-300);font:var(--type-title-5);flex:none;}
+
+.lds-progress{height:4px;border-radius:99px;background:var(--color-bg-tertiary);overflow:hidden;}
+.lds-progress__fill{height:100%;background:var(--color-brand);}
+
+.app-fairness{display:flex;flex-direction:column;gap:6px;}
+.app-fairness__head{display:flex;justify-content:space-between;font:var(--type-body-4);color:var(--color-text-tertiary);}
+.app-fairness__value{font-weight:var(--weight-semibold);color:var(--color-text-primary);font-variant-numeric:tabular-nums;}
+.app-fairness__track{display:flex;height:6px;border-radius:99px;overflow:hidden;background:var(--color-bg-tertiary);}
+.app-fairness__seg{height:100%;}
+.app-legs{display:flex;flex-wrap:wrap;gap:5px 12px;font:var(--type-body-4);color:var(--color-text-secondary);}
+.app-leg{display:inline-flex;align-items:center;gap:4px;}
+.app-leg__dot{width:7px;height:7px;border-radius:50%;flex:none;}
+.app-leg__time{font-variant-numeric:tabular-nums;color:var(--color-text-primary);}
+
+.app-timeline{display:flex;flex-direction:column;padding-inline:var(--screen-margin);}
+.app-timeline__item{display:grid;grid-template-columns:44px 1fr auto;gap:10px;padding-block:12px;position:relative;}
+.app-timeline__item+.app-timeline__item::before{content:"";position:absolute;inset-inline-start:21px;top:0;bottom:50%;width:2px;background:var(--color-separator);}
+.app-timeline__time{font:var(--type-title-5);font-variant-numeric:tabular-nums;position:relative;z-index:1;}
+.app-timeline__body{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.app-timeline__title{font:var(--type-title-4);}
+.app-timeline__meta{font:var(--type-body-4);color:var(--color-text-tertiary);}
+.app-timeline__grip{align-self:center;color:var(--color-text-quaternary);font-size:14px;}
+
+.app-map{position:relative;height:180px;flex:none;background:
+  repeating-linear-gradient(0deg,transparent 0 19px,var(--color-separator) 19px 20px),
+  repeating-linear-gradient(90deg,transparent 0 19px,var(--color-separator) 19px 20px),
+  var(--color-bg-secondary);}
+.app-map__pin{position:absolute;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:99px;background:var(--color-brand);color:#fff;font:var(--type-title-5);box-shadow:var(--elevation-2);white-space:nowrap;}
+.app-map__dot{position:absolute;width:9px;height:9px;border-radius:50%;border:2px solid var(--color-bg-primary);box-shadow:0 0 0 1px var(--color-separator-strong);}
+
+.callout-legend{font:var(--type-body-4);color:var(--color-text-tertiary);display:flex;flex-direction:column;gap:3px;}
+.callout-legend b{color:var(--color-text-secondary);font-weight:var(--weight-semibold);}
+
+.doc-footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--doc-border);font:var(--type-body-3);color:var(--color-text-tertiary);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;}
+.doc-footer a{color:var(--color-text-link);text-decoration:none;}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+@media (max-width:640px){.doc-title{font-size:26px;}}
+</style>
+
+<div class="doc">
+  <div class="doc-inner">
+
+    <header class="doc-header">
+      <p class="doc-eyebrow">Design System · Wireframe Review</p>
+      <h1 class="doc-title">중간 지점 추천 서비스 — 와이어프레임</h1>
+      <p class="doc-lede">
+        LINE Design System(LDSM) 공개 문서에서 추출한 색상·타이포그래피·레이아웃 스펙을 토큰으로 구축하고,
+        그 컴포넌트로 실제 화면 6개를 조립했습니다. 숫자 스펙이 공개되지 않은 값은 <b style="color:var(--color-text-secondary)">[유추]</b>로 표시했습니다.
+      </p>
+      <div class="doc-meta">
+        <span class="doc-meta__item"><span class="doc-meta__dot"></span>소스: <a href="https://designsystem.line.me" target="_blank" rel="noopener">designsystem.line.me — LDSM</a></span>
+        <span class="doc-meta__item"><span class="doc-meta__dot"></span>작성일 2026-07-31</span>
+        <span class="doc-meta__item"><span class="doc-meta__dot"></span>프레임 6개 · 컴포넌트 18종</span>
+      </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- FOUNDATION -->
+    <!-- ============================================================ -->
+    <section class="doc-section">
+      <div class="doc-section__head">
+        <h2 class="doc-section__title">파운데이션</h2>
+        <span class="doc-section__num">01</span>
+      </div>
+
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-green-500)"></div>
+          <div class="swatch__meta"><span class="swatch__name">LINE Green 500</span><span class="swatch__hex">#06C755</span><span class="swatch__role">Brand · Primary action</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-red-500)"></div>
+          <div class="swatch__meta"><span class="swatch__name">LINE Red 500</span><span class="swatch__hex">#FF334B</span><span class="swatch__role">Danger · 삭제</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-blue-500)"></div>
+          <div class="swatch__meta"><span class="swatch__name">LINE Blue 500</span><span class="swatch__hex">#4D73FF</span><span class="swatch__role">Link · 정보</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-orange-500)"></div>
+          <div class="swatch__meta"><span class="swatch__name">Orange 500</span><span class="swatch__hex">#FA9E1E</span><span class="swatch__role">Caution · 마감 임박</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-gray-900)"></div>
+          <div class="swatch__meta"><span class="swatch__name">Gray 900</span><span class="swatch__hex">#1F1F1F</span><span class="swatch__role">Text (dark bg)</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-gray-500)"></div>
+          <div class="swatch__meta"><span class="swatch__name">Gray 500</span><span class="swatch__hex">#B7B7B7</span><span class="swatch__role">Quaternary text</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-gray-200)"></div>
+          <div class="swatch__meta"><span class="swatch__name">Gray 200</span><span class="swatch__hex">#EFEFEF</span><span class="swatch__role">Surface tertiary</span></div></div>
+        <div class="swatch"><div class="swatch__fill" style="background:var(--lds-white);border-bottom:1px solid var(--doc-border)"></div>
+          <div class="swatch__meta"><span class="swatch__name">White</span><span class="swatch__hex">#FFFFFF</span><span class="swatch__role">Surface primary</span></div></div>
+      </div>
+
+      <div class="type-list" style="margin-top:28px;">
+        <div class="type-row"><span class="type-row__label">Heading 1</span><span class="type-row__sample" style="font:var(--type-heading-1)">중간 지점을 찾아드려요</span><span class="type-row__spec">Heavy / 24</span></div>
+        <div class="type-row"><span class="type-row__label">Title 1</span><span class="type-row__sample" style="font:var(--type-title-1)">강남역이 가장 공평해요</span><span class="type-row__spec">Bold / 23</span></div>
+        <div class="type-row"><span class="type-row__label">Title 3</span><span class="type-row__sample" style="font:var(--type-title-3)">이탈리안 레스토랑</span><span class="type-row__spec">SemiBold / 16</span></div>
+        <div class="type-row"><span class="type-row__label">Body 1</span><span class="type-row__sample" style="font:var(--type-body-1)">도보 5분 · 21:30 마감</span><span class="type-row__spec">Regular / 16</span></div>
+        <div class="type-row"><span class="type-row__label">Body 3</span><span class="type-row__sample" style="font:var(--type-body-3)">이동시간 차이 4분</span><span class="type-row__spec">Regular / 13</span></div>
+        <div class="type-row"><span class="type-row__label">Body 4</span><span class="type-row__sample" style="font:var(--type-body-4)">환승 1회 · 25분 소요</span><span class="type-row__spec">Regular / 12</span></div>
+      </div>
+
+      <div class="grid-demo" style="margin-top:28px;">
+        <div class="grid-frame">
+          <div class="grid-frame__bar"></div>
+          <div class="grid-frame__body">
+            <div class="grid-frame__margin"></div>
+            <div class="grid-frame__cols">
+              <div class="grid-frame__col"></div><div class="grid-frame__col"></div><div class="grid-frame__col"></div>
+            </div>
+            <div class="grid-frame__margin"></div>
+          </div>
+        </div>
+        <dl class="grid-legend">
+          <dt>화면 여백</dt><dd>좌우 16pt 공통 (카드 내부도 동일)</dd>
+          <dt>컬럼 구성 (375pt 기준)</dt>
+          <dd>2컬럼 — 폭 167 · 거터 9</dd>
+          <dd>3컬럼 — 폭 109 · 거터 8</dd>
+          <dd>4컬럼 — 폭 82 · 거터 5</dd>
+          <dt>서체</dt>
+          <dd>OS 시스템 폰트만 사용 (별도 웹폰트 없음)</dd>
+        </dl>
+      </div>
+
+      <p class="foundation-note">
+        아래 프레임은 뷰어의 라이트/다크 모드를 그대로 따릅니다 — <b>테마를 전환해 다크 모드 매핑을 함께 확인</b>할 수 있습니다.
+        (LDSM Semantic Colors 원칙: primaryText는 라이트 #111111 / 다크 #FFFFFF로 매핑)
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FLOW -->
+    <!-- ============================================================ -->
+    <section class="doc-section">
+      <div class="doc-section__head">
+        <h2 class="doc-section__title">플로우 와이어프레임</h2>
+        <span class="doc-section__num">02</span>
+      </div>
+
+      <div class="gallery">
+
+        <!-- FRAME 1 -->
+        <div class="frame-block">
+          <div class="frame-block__head"><span class="frame-block__num">1</span><h3 class="frame-block__title">참가자 &amp; 목적 입력</h3></div>
+          <p class="frame-block__caption">출발지·출발시간과 만나는 목적(카테고리)을 먼저 받아 이후 랭킹·영업시간 필터의 기준으로 씁니다.</p>
+          <div class="device"><div class="device__screen">
+            <div class="device__statusbar"><span>9:41</span>
+              <span class="device__statusbar-icons"><span class="device__sig"><i></i><i></i><i></i><i></i></span><span class="device__batt"></span></span>
+            </div>
+            <div class="lds-screen">
+              <div class="lds-topnav lds-topnav--regular"><span class="lds-topnav__left">‹</span><span class="lds-topnav__title">약속 정보 입력</span><span class="lds-topnav__right"></span></div>
+              <div class="lds-scroll">
+                <div class="lds-list-header"><span class="lds-list-header__title">참가자 (3)</span><span class="lds-list-header__aux">최대 4명</span></div>
+                <div class="lds-margin" style="display:flex;flex-direction:column;gap:2px;">
+                  <div class="lds-row" style="padding-inline:0;"><span class="lds-avatar lds-avatar--brand">지</span><span class="lds-row__text"><span class="lds-row__title">지민</span><span class="lds-row__desc">신도림역 · 18:30 출발</span></span><span class="lds-row__right">›</span></div>
+                  <div class="lds-row" style="padding-inline:0;"><span class="lds-avatar">서</span><span class="lds-row__text"><span class="lds-row__title">서연</span><span class="lds-row__desc">삼성역 · 18:40 출발</span></span><span class="lds-row__right">›</span></div>
+                </div>
+                <div class="lds-margin" style="margin-top:10px;padding:12px;border:1px solid var(--color-brand);border-radius:12px;background:var(--color-brand-subtle);display:flex;flex-direction:column;gap:10px;">
+                  <span style="font:var(--type-body-4);font-weight:600;color:var(--color-brand);">새 참가자 · 준호</span>
+                  <div class="lds-input"><span class="lds-input__label">출발역 검색<span class="lds-input__required">*</span></span>
+                    <div class="lds-input__control"><span class="lds-input__field">교대</span><span class="lds-input__reset">×</span></div>
+                    <span class="lds-input__footer">교대역, 교대역(법원·검찰청) 등 2건</span>
+                  </div>
+                </div>
+                <p style="margin:10px var(--screen-margin) 0;font:var(--type-body-4);color:var(--color-text-tertiary);">5명 이상이면 비슷한 지역끼리 묶어 대표 출발지 하나로 입력해보세요.</p>
+                <div class="lds-margin" style="margin-top:6px;"><span class="lds-capsule lds-capsule--mono">+ 참가자 추가</span></div>
+                <hr class="lds-divider" style="margin-top:18px;">
+                <div class="lds-list-header"><span class="lds-list-header__title">무엇을 하고 싶나요?</span><span class="lds-list-header__aux">복수 선택</span></div>
+                <div class="lds-margin lds-chip-row">
+                  <span class="lds-chip lds-chip--selected">식사</span><span class="lds-chip">카페</span><span class="lds-chip">술</span>
+                  <span class="lds-chip">영화</span><span class="lds-chip lds-chip--selected">전시</span><span class="lds-chip">쇼핑</span><span class="lds-chip">액티비티</span>
+                </div>
+              </div>
+              <div class="lds-sticky-button"><button class="lds-box-button lds-box-button--full">중간 지점 찾기 · 2개 선택됨</button></div>
+            </div>
+          </div></div>
+          <dl class="callout-legend"><b>①</b> 입력 완료 참가자는 요약 행으로 축소<br><b>②</b> 편집 중인 참가자는 Input 컴포넌트로 확장<br><b>③</b> 카테고리는 이후 랭킹의 필터 기준</dl>
+        </div>
+
+        <!-- FRAME 2 -->
+        <div class="frame-block">
+          <div class="frame-block__head"><span class="frame-block__num">2</span><h3 class="frame-block__title">계산 중</h3></div>
+          <p class="frame-block__caption">대중교통 소요시간 균등도를 1순위로 계산하는 동안 진행 단계를 텍스트로 알립니다.</p>
+          <div class="device"><div class="device__screen">
+            <div class="device__statusbar"><span>9:41</span><span class="device__statusbar-icons"><span class="device__sig"><i></i><i></i><i></i><i></i></span><span class="device__batt"></span></span></div>
+            <div class="lds-screen" style="justify-content:center;align-items:center;gap:20px;padding:0 32px;text-align:center;">
+              <div style="width:56px;height:56px;border-radius:50%;background:var(--color-brand-subtle);display:grid;place-items:center;">
+                <div style="width:28px;height:28px;border:3px solid var(--color-brand);border-right-color:transparent;border-radius:50%;"></div>
+              </div>
+              <div><p style="font:var(--type-title-3);margin:0 0 4px;">3명의 이동 시간을 비교하고 있어요</p>
+              <p style="font:var(--type-body-3);color:var(--color-text-tertiary);margin:0;">대중교통 기준 · 환승 정보 포함</p></div>
+              <div style="width:100%;max-width:220px;text-align:left;display:flex;flex-direction:column;gap:8px;font:var(--type-body-4);color:var(--color-text-tertiary);">
+                <span style="color:var(--color-text-secondary)">✓ 역 후보 62곳 탐색</span>
+                <span style="color:var(--color-text-secondary)">✓ 소요시간·환승 비교</span>
+                <span>· 카테고리별 장소 밀집도 확인 중</span>
+              </div>
+              <div class="lds-progress" style="width:100%;max-width:220px;"><div class="lds-progress__fill" style="width:70%;"></div></div>
+            </div>
+          </div></div>
+          <dl class="callout-legend"><b>①</b> Progress Indicator + 단계 체크리스트로 대기 체감 시간 완화</dl>
+        </div>
+
+        <!-- FRAME 3 -->
+        <div class="frame-block">
+          <div class="frame-block__head"><span class="frame-block__num">3</span><h3 class="frame-block__title">추천 결과</h3></div>
+          <p class="frame-block__caption">시간 균등도가 1순위, 환승 횟수는 동점일 때만 비교합니다. 공정성 지표를 숫자가 아닌 막대로도 보여줍니다.</p>
+          <div class="device"><div class="device__screen">
+            <div class="device__statusbar"><span>9:41</span><span class="device__statusbar-icons"><span class="device__sig"><i></i><i></i><i></i><i></i></span><span class="device__batt"></span></span></div>
+            <div class="lds-screen">
+              <div class="lds-topnav lds-topnav--emphasis"><span class="lds-topnav__left"></span><span class="lds-topnav__title" style="text-align:left;">추천 결과</span><span class="lds-topnav__right">⋯</span></div>
+              <div class="lds-scroll">
+                <div class="app-map">
+                  <span class="app-map__dot" style="background:var(--lds-blue-500);top:30%;left:22%;"></span>
+                  <span class="app-map__dot" style="background:var(--lds-orange-500);top:62%;left:74%;"></span>
+                  <span class="app-map__dot" style="background:var(--lds-gray-500);top:78%;left:30%;"></span>
+                  <span class="app-map__pin" style="top:44%;left:44%;">📍 강남역</span>
+                </div>
+                <div class="lds-margin" style="margin-top:14px;">
+                  <div class="lds-card" style="border-color:var(--color-brand);">
+                    <div class="lds-card__body">
+                      <span class="lds-badge lds-badge--brand" style="width:fit-content;">1위 · 가장 공평해요</span>
+                      <span class="lds-card__title" style="font:var(--type-title-1);">강남역</span>
+                      <div class="app-fairness" style="margin-top:6px;">
+                        <div class="app-fairness__head">이동시간 차이<span class="app-fairness__value">4분</span></div>
+                        <div class="app-fairness__track"><span class="app-fairness__seg" style="width:34%;background:var(--lds-blue-500);"></span><span class="app-fairness__seg" style="width:33%;background:var(--lds-orange-500);"></span><span class="app-fairness__seg" style="width:33%;background:var(--lds-gray-500);"></span></div>
+                        <div class="app-legs">
+                          <span class="app-leg"><span class="app-leg__dot" style="background:var(--lds-blue-500);"></span>지민 <span class="app-leg__time">27분</span></span>
+                          <span class="app-leg"><span class="app-leg__dot" style="background:var(--lds-orange-500);"></span>서연 <span class="app-leg__time">25분</span></span>
+                          <span class="app-leg"><span class="app-leg__dot" style="background:var(--lds-gray-500);"></span>준호 <span class="app-leg__time">23분</span></span>
+                        </div>
+                      </div>
+                      <div style="display:flex;gap:6px;margin-top:6px;"><span class="lds-badge lds-badge--info">환승 1회</span><span class="lds-badge">핫플레이스 밀집</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="lds-list-header"><span class="lds-list-header__title">다른 후보</span></div>
+                <div class="lds-margin" style="display:flex;flex-direction:column;">
+                  <div class="lds-row" style="padding-inline:0;"><span class="lds-avatar">2</span><span class="lds-row__text"><span class="lds-row__title">신논현역</span><span class="lds-row__desc">시간차 6분 · 환승 0회</span></span><span class="lds-row__right">›</span></div>
+                  <div class="lds-row" style="padding-inline:0;"><span class="lds-avatar">3</span><span class="lds-row__text"><span class="lds-row__title">교대역</span><span class="lds-row__desc">시간차 9분 · 환승 2회</span></span><span class="lds-row__right">›</span></div>
+                </div>
+              </div>
+              <div class="lds-sticky-button"><button class="lds-box-button lds-box-button--full">강남역으로 장소 보기</button></div>
+            </div>
+          </div></div>
+          <dl class="callout-legend"><b>①</b> 공정성 막대 = 시간 균등도 1순위 원칙의 시각화<br><b>②</b> 환승 배지는 참고 정보, 동점일 때만 정렬 기준</dl>
+        </div>
+
+        <!-- FRAME 4 -->
+        <div class="frame-block">
+          <div class="frame-block__head"><span class="frame-block__num">4</span><h3 class="frame-block__title">장소 탐색 &amp; 폴백 추천</h3></div>
+          <p class="frame-block__caption">영업 종료 임박은 배지로 경고하고, 중간 지점에 없으면 "누구 쪽에 가까운지" 밝히며 대안을 제시합니다.</p>
+          <div class="device"><div class="device__screen">
+            <div class="device__statusbar"><span>9:41</span><span class="device__statusbar-icons"><span class="device__sig"><i></i><i></i><i></i><i></i></span><span class="device__batt"></span></span></div>
+            <div class="lds-screen">
+              <div class="lds-topnav lds-topnav--regular"><span class="lds-topnav__left">‹</span><span class="lds-topnav__title">강남역 근처</span><span class="lds-topnav__right"></span></div>
+              <div class="lds-scroll">
+                <div class="lds-chip-row lds-chip-row--scroll" style="padding-top:8px;">
+                  <span class="lds-chip lds-chip--selected">식사 · 6곳</span><span class="lds-chip">전시 · 1곳</span><span class="lds-chip">카페 · 9곳</span>
+                </div>
+                <div class="lds-list-header"><span class="lds-list-header__title">식사</span><span class="lds-list-header__aux">영업중 우선</span></div>
+                <div class="lds-card-collection lds-card-collection--horizontal">
+                  <div class="lds-card"><div class="lds-card__media">사진</div>
+                    <span class="lds-badge lds-badge--caution lds-card__indicator">21:30 마감 임박</span>
+                    <div class="lds-card__body"><span class="lds-card__title">이탈리안 레스토랑</span><span class="lds-card__desc">도보 5분 · 파스타·피자</span></div></div>
+                  <div class="lds-card"><div class="lds-card__media">사진</div>
+                    <span class="lds-badge lds-badge--brand lds-card__indicator">인기</span>
+                    <div class="lds-card__body"><span class="lds-card__title">한식 다이닝</span><span class="lds-card__desc">도보 3분 · 22:00 마감</span></div></div>
+                </div>
+                <div class="lds-list-header"><span class="lds-list-header__title">전시</span><span class="lds-list-header__aux">지민님과 더 가까운 곳</span></div>
+                <div class="lds-margin">
+                  <div class="lds-card" style="flex-direction:row;">
+                    <div class="lds-card__media" style="width:96px;aspect-ratio:auto;flex:none;">사진</div>
+                    <div class="lds-card__body" style="justify-content:center;">
+                      <span class="lds-card__title">OO미술관</span>
+                      <span class="lds-card__desc">강남역보다 지민님 쪽이 가까워요 · 20:00까지</span>
+                      <span class="lds-badge lds-badge--info" style="width:fit-content;margin-top:2px;">도보 12분 더</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+          <dl class="callout-legend"><b>①</b> 마감 임박 배지 = 도착 예상 시각 대비 카테고리 표준 영업시간<br><b>②</b> 폴백 카드는 "누구에게 유리한지" 문장으로 명시</dl>
+        </div>
+
+        <!-- FRAME 5 -->
+        <div class="frame-block">
+          <div class="frame-block__head"><span class="frame-block__num">5</span><h3 class="frame-block__title">코스 스케줄</h3></div>
+          <p class="frame-block__caption">영업 마감을 역산해 자동으로 순서를 배치하되, 드래그로 순서를 바꾸면 시간표가 재계산됩니다.</p>
+          <div class="device"><div class="device__screen">
+            <div class="device__statusbar"><span>9:41</span><span class="device__statusbar-icons"><span class="device__sig"><i></i><i></i><i></i><i></i></span><span class="device__batt"></span></span></div>
+            <div class="lds-screen">
+              <div class="lds-topnav lds-topnav--regular"><span class="lds-topnav__left">‹</span><span class="lds-topnav__title">코스 일정</span><span class="lds-topnav__right lds-topnav__action">공유</span></div>
+              <div class="lds-scroll">
+                <p style="margin:10px var(--screen-margin) 0;font:var(--type-body-4);color:var(--color-text-tertiary);">✋ 드래그하여 순서를 바꿀 수 있어요</p>
+                <div class="app-timeline" style="margin-top:6px;">
+                  <div class="app-timeline__item"><span class="app-timeline__time">19:20</span>
+                    <div class="app-timeline__body"><span class="app-timeline__title" style="color:var(--color-text-tertiary);">도착 · 강남역</span><span class="app-timeline__meta">평균 이동 25분</span></div><span></span></div>
+                  <div class="app-timeline__item"><span class="app-timeline__time">19:30</span>
+                    <div class="app-timeline__body"><span class="app-timeline__title">저녁 식사 · 이탈리안 레스토랑</span><span class="app-timeline__meta">2시간 · 21:30 마감</span></div><span class="app-timeline__grip">⠿</span></div>
+                  <div class="app-timeline__item"><span class="app-timeline__time">21:30</span>
+                    <div class="app-timeline__body"><span class="app-timeline__title">전시 · OO미술관</span><span class="app-timeline__meta">1시간 · <span style="color:var(--color-caution);">마감 임박</span></span></div><span class="app-timeline__grip">⠿</span></div>
+                </div>
+              </div>
+              <div class="lds-snackbar">일정이 저장되었어요<span class="lds-snackbar__action">실행취소</span></div>
+              <div class="lds-sticky-button"><button class="lds-box-button lds-box-button--full">일정 공유하기</button></div>
+            </div>
+          </div></div>
+          <dl class="callout-legend"><b>①</b> 첫 항목은 도착 시각 기준점, 편집 불가<br><b>②</b> Grip 아이콘이 있는 행만 재배치 가능</dl>
+        </div>
+
+        <!-- FRAME 6 -->
+        <div class="frame-block">
+          <div class="frame-block__head"><span class="frame-block__num">6</span><h3 class="frame-block__title">장소 상세 (Bottom Sheet)</h3></div>
+          <p class="frame-block__caption">영업시간은 근사치이므로 카카오맵 원문 확인 도선을 항상 함께 둡니다.</p>
+          <div class="device"><div class="device__screen">
+            <div class="device__statusbar"><span>9:41</span><span class="device__statusbar-icons"><span class="device__sig"><i></i><i></i><i></i><i></i></span><span class="device__batt"></span></span></div>
+            <div class="lds-screen" style="position:relative;">
+              <div class="lds-topnav lds-topnav--regular" style="opacity:.5;"><span class="lds-topnav__left">‹</span><span class="lds-topnav__title">강남역 근처</span><span class="lds-topnav__right"></span></div>
+              <div class="lds-scroll" style="opacity:.5;">
+                <div class="lds-card-collection" style="padding-top:12px;">
+                  <div class="lds-card"><div class="lds-card__media">사진</div><div class="lds-card__body"><span class="lds-card__title">이탈리안 레스토랑</span></div></div>
+                </div>
+              </div>
+              <div class="lds-scrim"></div>
+              <div class="lds-sheet">
+                <div class="lds-sheet__handlebar"></div>
+                <div class="lds-sheet__header"><span class="lds-sheet__title">이탈리안 레스토랑</span><span class="lds-sheet__close">✕</span></div>
+                <div class="lds-scroll lds-margin" style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="lds-card__media" style="border-radius:12px;">사진</div>
+                  <div style="display:flex;gap:6px;"><span class="lds-badge lds-badge--brand">영업중</span><span class="lds-badge lds-badge--caution">21:30 마감</span></div>
+                  <p style="margin:0;font:var(--type-body-2);color:var(--color-text-secondary);">예상 도착 19:32 · 강남역에서 도보 5분</p>
+                  <p style="margin:0;font:var(--type-body-4);color:var(--color-text-tertiary);">영업시간은 표준 카테고리 기준 추정치예요. 정확한 정보는 카카오맵에서 확인하세요.</p>
+                </div>
+                <div class="lds-sheet__buttons lds-button-group lds-button-group--vertical">
+                  <button class="lds-box-button">이 장소로 정하기</button>
+                  <button class="lds-box-button lds-box-button--outline">카카오맵에서 보기</button>
+                </div>
+              </div>
+            </div>
+          </div></div>
+          <dl class="callout-legend"><b>①</b> Modal Bottom Sheet + Scrim<br><b>②</b> 마감 배지는 근사치임을 본문에서 다시 한번 고지</dl>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="doc-footer">
+      <span>토큰: <code style="font:12px ui-monospace,monospace;">design-system/tokens.css</code> · 컴포넌트: <code style="font:12px ui-monospace,monospace;">design-system/components.css</code></span>
+      <span>참고 <a href="https://designsystem.line.me" target="_blank" rel="noopener">LINE Design System for Messenger</a></span>
+    </footer>
+
+  </div>
+</div>
